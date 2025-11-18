@@ -1,10 +1,8 @@
 import { test, expect } from "@playwright/test";
 
-// Используем describe.serial для последовательного выполнения тестов
 test.describe("API-тесты для Restful-booker", () => {
   const baseURL = "https://restful-booker.herokuapp.com";
 
-  // Данные для тестов
   const bookingData = {
     firstname: "Jim",
     lastname: "Brown",
@@ -29,7 +27,6 @@ test.describe("API-тесты для Restful-booker", () => {
     additionalneeds: "Lunch",
   };
 
-  // Функция для получения токена авторизации
   async function getAuthToken(request) {
     const authResponse = await request.post(`${baseURL}/auth`, {
       data: {
@@ -42,7 +39,6 @@ test.describe("API-тесты для Restful-booker", () => {
     return authBody.token;
   }
 
-  // Функция для создания бронирования
   async function createBooking(request) {
     const response = await request.post(`${baseURL}/booking`, {
       headers: {
@@ -72,12 +68,11 @@ test.describe("API-тесты для Restful-booker", () => {
     const responseBody = await response.json();
     console.log("Тело ответа:", responseBody);
 
-    // ПРАВИЛЬНЫЕ ПРОВЕРКИ:
     expect(responseBody).toHaveProperty("bookingid");
     expect(responseBody.bookingid).toBeGreaterThan(0);
     expect(responseBody.booking).toEqual(bookingData);
 
-    console.log(`✅ Созданное бронирование ID: ${responseBody.bookingid}`);
+    console.log(`Созданное бронирование ID: ${responseBody.bookingid}`);
   });
 
   test("2. Получение информации о бронировании (Read - GET)", async ({
@@ -105,7 +100,6 @@ test.describe("API-тесты для Restful-booker", () => {
   });
 
   test("3. Обновление бронирования (Update - PUT)", async ({ request }) => {
-    // Создаем новое бронирование для этого теста
     const bookingId = await createBooking(request);
     console.log(`Используем bookingId для обновления: ${bookingId}`);
 
@@ -113,7 +107,6 @@ test.describe("API-тесты для Restful-booker", () => {
     const authToken = await getAuthToken(request);
     console.log(`Получен токен авторизации: ${authToken}`);
 
-    // Отправляем PUT запрос для обновления
     const response = await request.put(`${baseURL}/booking/${bookingId}`, {
       headers: {
         "Content-Type": "application/json",
@@ -136,15 +129,12 @@ test.describe("API-тесты для Restful-booker", () => {
   });
 
   test("4. Удаление бронирования (Delete - DELETE)", async ({ request }) => {
-    // Создаем новое бронирование для этого теста
     const bookingId = await createBooking(request);
     console.log(`Используем bookingId для удаления: ${bookingId}`);
 
-    // Получаем токен авторизации
     const authToken = await getAuthToken(request);
     console.log(`Используем токен авторизации: ${authToken}`);
 
-    // Отправляем DELETE запрос для удаления
     const response = await request.delete(`${baseURL}/booking/${bookingId}`, {
       headers: {
         Cookie: `token=${authToken}`,
@@ -156,8 +146,7 @@ test.describe("API-тесты для Restful-booker", () => {
 
     console.log("Бронирование успешно удалено");
 
-    // Проверяем что бронирование действительно удалено
-    console.log("--- Проверяем что бронирование действительно удалено ---");
+    console.log("--- Проверяем что бронирование удалено ---");
 
     const getResponse = await request.get(`${baseURL}/booking/${bookingId}`, {
       headers: {
@@ -170,6 +159,6 @@ test.describe("API-тесты для Restful-booker", () => {
     );
 
     expect(getResponse.status()).toBe(404);
-    console.log("✅ Бронирование больше не существует (404 Not Found)!");
+    console.log(" Бронирование больше не существует (404 Not Found)!");
   });
 });
