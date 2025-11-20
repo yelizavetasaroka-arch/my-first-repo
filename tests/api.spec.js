@@ -53,7 +53,7 @@ test.describe("API-тесты для Restful-booker", () => {
     return responseBody.bookingid;
   }
 
-  test("1. Создание бронирования (Create - POST)", async ({ request }) => {
+  test("1. Создание бронирования (Create - POST) @api", async ({ request }) => {
     const response = await request.post(`${baseURL}/booking`, {
       headers: {
         "Content-Type": "application/json",
@@ -75,7 +75,7 @@ test.describe("API-тесты для Restful-booker", () => {
     console.log(`Созданное бронирование ID: ${responseBody.bookingid}`);
   });
 
-  test("2. Получение информации о бронировании (Read - GET)", async ({
+  test("2. Получение информации о бронировании (Read - GET) @api", async ({
     request,
   }) => {
     // Создаем новое бронирование для этого теста
@@ -99,7 +99,9 @@ test.describe("API-тесты для Restful-booker", () => {
     expect(responseBody).toEqual(bookingData);
   });
 
-  test("3. Обновление бронирования (Update - PUT)", async ({ request }) => {
+  test("3. Обновление бронирования (Update - PUT) @api", async ({
+    request,
+  }) => {
     const bookingId = await createBooking(request);
     console.log(`Используем bookingId для обновления: ${bookingId}`);
 
@@ -128,7 +130,9 @@ test.describe("API-тесты для Restful-booker", () => {
     expect(responseBody).toEqual(updatedBookingData);
   });
 
-  test("4. Удаление бронирования (Delete - DELETE)", async ({ request }) => {
+  test("4. Удаление бронирования (Delete - DELETE) @api", async ({
+    request,
+  }) => {
     const bookingId = await createBooking(request);
     console.log(`Используем bookingId для удаления: ${bookingId}`);
 
