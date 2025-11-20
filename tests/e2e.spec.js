@@ -6,7 +6,7 @@ import { CheckoutStepOnePage } from "../pages/checkout-step-one.page.js";
 import { CheckoutStepTwoPage } from "../pages/checkout-step-two.page.js";
 import { CheckoutCompletePage } from "../pages/checkout.complete.page.js";
 
-test("Полный процесс от логина до завершения заказа", async ({ page }) => {
+test("@ui Полный процесс от логина до завершения заказа", async ({ page }) => {
   const loginPage = new LoginPage(page);
   const inventoryPage = new InventoryPage(page);
   const cartPage = new CartPage(page);
